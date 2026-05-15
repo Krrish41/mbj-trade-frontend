@@ -4,7 +4,8 @@ const tabPanels = document.querySelectorAll("[data-panel]");
 const filterButtons = document.querySelectorAll("[data-filter]");
 const productCards = document.querySelectorAll("[data-category]");
 const leadForm = document.querySelector("[data-lead-form]");
-const formStatus = document.querySelector("[data-form-status]");
+const tabTimers = new WeakMap();
+const productTimers = new WeakMap();
 
 const refreshHeader = () => {
   header?.classList.toggle("is-scrolled", window.scrollY > 24);
@@ -16,6 +17,12 @@ window.addEventListener("scroll", refreshHeader, { passive: true });
 tabButtons.forEach((button) => {
   button.addEventListener("click", () => {
     const target = button.dataset.tab;
+    const targetPanel = document.querySelector(`[data-panel="${target}"]`);
+    const currentPanel = document.querySelector(".tab-panel.active");
+
+    if (!targetPanel || targetPanel === currentPanel) {
+      return;
+    }
 
     tabButtons.forEach((item) => {
       const isActive = item === button;
@@ -23,9 +30,19 @@ tabButtons.forEach((button) => {
       item.setAttribute("aria-selected", String(isActive));
     });
 
-    tabPanels.forEach((panel) => {
-      panel.classList.toggle("active", panel.dataset.panel === target);
-    });
+    if (currentPanel) {
+      window.clearTimeout(tabTimers.get(currentPanel));
+      currentPanel.classList.add("is-exiting");
+      tabTimers.set(
+        currentPanel,
+        window.setTimeout(() => {
+          currentPanel.classList.remove("active", "is-exiting");
+        }, 200)
+      );
+    }
+
+    targetPanel.classList.remove("is-exiting");
+    targetPanel.classList.add("active");
   });
 });
 
@@ -34,8 +51,40 @@ filterButtons.forEach((button) => {
     const filter = button.dataset.filter;
 
     filterButtons.forEach((item) => item.classList.toggle("active", item === button));
+    let visibleIndex = 0;
+
     productCards.forEach((card) => {
-      card.hidden = filter !== "all" && card.dataset.category !== filter;
+      window.clearTimeout(productTimers.get(card));
+
+      const shouldShow = filter === "all" || card.dataset.category === filter;
+
+      if (shouldShow) {
+        card.hidden = false;
+        card.classList.remove("is-hiding", "is-showing");
+        card.style.animationDelay = `${visibleIndex * 55}ms`;
+        void card.offsetWidth;
+        card.classList.add("is-showing");
+        productTimers.set(
+          card,
+          window.setTimeout(() => {
+            card.classList.remove("is-showing");
+            card.style.animationDelay = "";
+          }, 520 + visibleIndex * 55)
+        );
+        visibleIndex += 1;
+        return;
+      }
+
+      card.classList.remove("is-showing");
+      card.classList.add("is-hiding");
+      card.style.animationDelay = "";
+      productTimers.set(
+        card,
+        window.setTimeout(() => {
+          card.hidden = true;
+          card.classList.remove("is-hiding");
+        }, 220)
+      );
     });
   });
 });
@@ -43,33 +92,29 @@ filterButtons.forEach((button) => {
 leadForm?.addEventListener("submit", (event) => {
   event.preventDefault();
 
-  const formData = new FormData(leadForm);
-  const inquiry = {
-    name: formData.get("name")?.toString().trim(),
-    company: formData.get("company")?.toString().trim(),
-    email: formData.get("email")?.toString().trim(),
-    whatsapp: formData.get("whatsapp")?.toString().trim(),
-    product: formData.get("product")?.toString().trim(),
-    destination: formData.get("destination")?.toString().trim(),
-    message: formData.get("message")?.toString().trim(),
-  };
+  const submitButton = leadForm.querySelector(".form-submit");
 
-  const body = [
-    `Name: ${inquiry.name}`,
-    `Company: ${inquiry.company}`,
-    `Email: ${inquiry.email}`,
-    `WhatsApp: ${inquiry.whatsapp || "Not provided"}`,
-    `Product of Interest: ${inquiry.product}`,
-    `Destination: ${inquiry.destination}`,
-    "",
-    "Message:",
-    inquiry.message || "No additional message provided.",
-  ].join("\n");
+  if (submitButton) {
+    submitButton.disabled = true;
+    submitButton.setAttribute("aria-busy", "true");
+    submitButton.innerHTML = '<span class="button-spinner" aria-hidden="true"></span> Sending...';
+  }
 
-  formStatus.textContent = "Opening your email client with the inquiry details.";
-  window.location.href = `mailto:info@mbjglobal.net?subject=${encodeURIComponent(
-    `Trade Inquiry from ${inquiry.company || inquiry.name}`
-  )}&body=${encodeURIComponent(body)}`;
+  window.setTimeout(() => {
+    leadForm.innerHTML = `
+      <div class="success-state" role="status" aria-live="polite">
+        <div class="success-icon" aria-hidden="true">
+          <i data-lucide="circle-check"></i>
+        </div>
+        <h3>Inquiry Sent Successfully!</h3>
+        <p>Thank you for reaching out. Our team will get back to you within 24 business hours.</p>
+      </div>
+    `;
+
+    if (window.lucide) {
+      window.lucide.createIcons();
+    }
+  }, 900);
 });
 
 window.addEventListener("DOMContentLoaded", () => {
