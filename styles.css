@@ -525,7 +525,7 @@ textarea {
   display: block;
   opacity: 0;
   transform: translateY(4px);
-  transition: opacity 0.2s ease, transform 0.2s ease;
+  transition: opacity 0.08s ease, transform 0.08s ease;
   animation: none;
 }
 
@@ -584,8 +584,8 @@ textarea {
   opacity: 1;
   transform: translateY(0) scale(1);
   transition:
-    opacity 220ms ease,
-    transform 220ms ease,
+    opacity 100ms ease,
+    transform 100ms ease,
     box-shadow 180ms ease,
     border-color 180ms ease;
 }

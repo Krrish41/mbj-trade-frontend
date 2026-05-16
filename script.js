@@ -59,7 +59,7 @@ tabButtons.forEach((button) => {
           currentPanel.classList.remove("active", "is-exiting");
           targetPanel.classList.remove("is-exiting");
           targetPanel.classList.add("active");
-        }, 200)
+        }, 80)
       );
     } else {
       targetPanel.classList.remove("is-exiting");
@@ -95,7 +95,7 @@ filterButtons.forEach((button) => {
       card.style.animationDelay = "";
     });
 
-    const hideDuration = cardsToHide.length > 0 ? 220 : 0;
+    const hideDuration = cardsToHide.length > 0 ? 90 : 0;
 
     window.setTimeout(() => {
       cardsToHide.forEach((card) => {
@@ -107,7 +107,7 @@ filterButtons.forEach((button) => {
       cardsToShow.forEach((card) => {
         card.hidden = false;
         card.classList.remove("is-hiding", "is-showing");
-        card.style.animationDelay = `${visibleIndex * 60}ms`;
+        card.style.animationDelay = `${visibleIndex * 35}ms`;
         void card.offsetWidth;
         card.classList.add("is-showing");
 
@@ -116,7 +116,7 @@ filterButtons.forEach((button) => {
           window.setTimeout(() => {
             card.classList.remove("is-showing");
             card.style.animationDelay = "";
-          }, 550 + visibleIndex * 60)
+          }, 500 + visibleIndex * 35)
         );
 
         visibleIndex += 1;
