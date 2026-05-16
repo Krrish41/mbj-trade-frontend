@@ -1,20 +1,16 @@
-# MBJ Global Pvt. Ltd. — Enterprise B2B Portal
+# MBJ Global Pvt. Ltd. Enterprise B2B Portal
 
-A premium, high-performance corporate B2B web application engineered for **MBJ Global Pvt. Ltd.** Designed to facilitate international trade, private label partnerships, and institutional sourcing across global markets.
+A premium, high-performance corporate B2B web application engineered for MBJ Global Pvt. Ltd. Designed to facilitate international trade, private label partnerships, and institutional sourcing across global markets.
 
----
+## Architecture & Key Features
 
-## 🏛️ Architecture & Key Features
+* **Modern UI/UX Design System**: Built with an elegant corporate aesthetic utilizing curated color palettes (Agro Green, Golden Wheat, Corporate Navy) and sophisticated glassmorphism backdrop-filter effects.
+* **Advanced Animation Choreography**: Features custom, synchronized two-step animation engines for both company tab switching and product category filtering, ensuring silky smooth transitions with zero layout shift or DOM jumping.
+* **Interactive Global Reach Map**: Incorporates a mathematically calibrated equirectangular map projection with responsive aspect-ratio locking (2 / 1) to guarantee absolute geographical accuracy for international trade markers (India, UK, UAE, Singapore).
+* **Enterprise Inquiry Engine**: Fully interactive lead generation form equipped with instant accessibility feedback (aria-busy), simulated asynchronous processing, and smooth success confirmation states.
+* **Fully Responsive**: Optimized for seamless navigation across all viewports, featuring a dedicated slide-down mobile navigation menu and touch-friendly interactive components.
 
-- **Modern UI/UX Design System**: Built with an elegant corporate aesthetic utilizing curated color palettes (`Agro Green`, `Golden Wheat`, `Corporate Navy`) and sophisticated glassmorphism backdrop-filter effects.
-- **Advanced Animation Choreography**: Features custom, synchronized two-step animation engines for both company tab switching and product category filtering, ensuring silky smooth transitions with zero layout shift or DOM jumping.
-- **Interactive Global Reach Map**: Incorporates a mathematically calibrated equirectangular map projection with responsive aspect-ratio locking (`2 / 1`) to guarantee absolute geographical accuracy for international trade markers (India, UK, UAE, Singapore).
-- **Enterprise Inquiry Engine**: Fully interactive lead generation form equipped with instant accessibility feedback (`aria-busy`), simulated asynchronous processing, and smooth success confirmation states.
-- **Fully Responsive**: Optimized for seamless navigation across all viewports, featuring a dedicated slide-down mobile navigation menu and touch-friendly interactive components.
-
----
-
-## 📁 Project Structure
+## Project Structure
 
 ```text
 mbj-trade-frontend/
@@ -24,18 +20,14 @@ mbj-trade-frontend/
 └── README.md        # Technical documentation and project overview
 ```
 
----
+## Technology Stack
 
-## 🛠️ Technology Stack
+* **Core**: HTML5 & Vanilla JavaScript (ES6+). No heavy framework overhead.
+* **Styling**: Vanilla CSS3 with custom CSS variables, Flexbox/Grid layouts, and responsive media queries.
+* **Typography**: Hosted Google Fonts (Inter for clean UI readability, Playfair Display for premium editorial headers).
+* **Iconography**: Lucide Icons dynamically rendered via CDN for crisp, scalable vector graphics.
 
-- **Core**: HTML5 & Vanilla JavaScript (ES6+). No heavy framework overhead.
-- **Styling**: Vanilla CSS3 with custom CSS variables, Flexbox/Grid layouts, and responsive media queries.
-- **Typography**: Hosted Google Fonts (*Inter* for clean UI readability, *Playfair Display* for premium editorial headers).
-- **Iconography**: Lucide Icons dynamically rendered via CDN for crisp, scalable vector graphics.
-
----
-
-## 🚀 Local Development & Preview
+## Local Development & Preview
 
 The application is fully static and requires no complex build pipelines or package installations.
 
@@ -58,8 +50,6 @@ Then navigate to:
 http://localhost:4173/
 ```
 
----
-
-## 📄 License & Copyright
+## License & Copyright
 
 &copy; 2026 MBJ Global Pvt. Ltd. All Rights Reserved. Confidential and proprietary enterprise software.
