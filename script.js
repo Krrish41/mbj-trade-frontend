@@ -4,8 +4,27 @@ const tabPanels = document.querySelectorAll("[data-panel]");
 const filterButtons = document.querySelectorAll("[data-filter]");
 const productCards = document.querySelectorAll("[data-category]");
 const leadForm = document.querySelector("[data-lead-form]");
+const mobileToggle = document.querySelector("[data-mobile-toggle]");
+const mobileMenu = document.querySelector("[data-mobile-menu]");
+const mobileLinks = document.querySelectorAll("[data-mobile-link]");
 const tabTimers = new WeakMap();
 const productTimers = new WeakMap();
+
+if (mobileToggle && mobileMenu) {
+  mobileToggle.addEventListener("click", () => {
+    const isOpen = mobileMenu.classList.toggle("is-open");
+    mobileToggle.classList.toggle("is-active", isOpen);
+    mobileToggle.setAttribute("aria-expanded", String(isOpen));
+  });
+
+  mobileLinks.forEach((link) => {
+    link.addEventListener("click", () => {
+      mobileMenu.classList.remove("is-open");
+      mobileToggle.classList.remove("is-active");
+      mobileToggle.setAttribute("aria-expanded", "false");
+    });
+  });
+}
 
 const refreshHeader = () => {
   header?.classList.toggle("is-scrolled", window.scrollY > 24);
@@ -33,59 +52,76 @@ tabButtons.forEach((button) => {
     if (currentPanel) {
       window.clearTimeout(tabTimers.get(currentPanel));
       currentPanel.classList.add("is-exiting");
+
       tabTimers.set(
         currentPanel,
         window.setTimeout(() => {
           currentPanel.classList.remove("active", "is-exiting");
+          targetPanel.classList.remove("is-exiting");
+          targetPanel.classList.add("active");
         }, 200)
       );
+    } else {
+      targetPanel.classList.remove("is-exiting");
+      targetPanel.classList.add("active");
     }
-
-    targetPanel.classList.remove("is-exiting");
-    targetPanel.classList.add("active");
   });
 });
 
 filterButtons.forEach((button) => {
   button.addEventListener("click", () => {
-    const filter = button.dataset.filter;
+    if (button.classList.contains("active")) return;
 
+    const filter = button.dataset.filter;
     filterButtons.forEach((item) => item.classList.toggle("active", item === button));
-    let visibleIndex = 0;
+
+    const cardsToHide = [];
+    const cardsToShow = [];
 
     productCards.forEach((card) => {
       window.clearTimeout(productTimers.get(card));
-
       const shouldShow = filter === "all" || card.dataset.category === filter;
 
-      if (shouldShow) {
+      if (!shouldShow && !card.hidden) {
+        cardsToHide.push(card);
+      } else if (shouldShow) {
+        cardsToShow.push(card);
+      }
+    });
+
+    cardsToHide.forEach((card) => {
+      card.classList.remove("is-showing");
+      card.classList.add("is-hiding");
+      card.style.animationDelay = "";
+    });
+
+    const hideDuration = cardsToHide.length > 0 ? 220 : 0;
+
+    window.setTimeout(() => {
+      cardsToHide.forEach((card) => {
+        card.hidden = true;
+        card.classList.remove("is-hiding");
+      });
+
+      let visibleIndex = 0;
+      cardsToShow.forEach((card) => {
         card.hidden = false;
         card.classList.remove("is-hiding", "is-showing");
-        card.style.animationDelay = `${visibleIndex * 55}ms`;
+        card.style.animationDelay = `${visibleIndex * 60}ms`;
         void card.offsetWidth;
         card.classList.add("is-showing");
+
         productTimers.set(
           card,
           window.setTimeout(() => {
             card.classList.remove("is-showing");
             card.style.animationDelay = "";
-          }, 520 + visibleIndex * 55)
+          }, 550 + visibleIndex * 60)
         );
-        visibleIndex += 1;
-        return;
-      }
 
-      card.classList.remove("is-showing");
-      card.classList.add("is-hiding");
-      card.style.animationDelay = "";
-      productTimers.set(
-        card,
-        window.setTimeout(() => {
-          card.hidden = true;
-          card.classList.remove("is-hiding");
-        }, 220)
-      );
-    });
+        visibleIndex += 1;
+      });
+    }, hideDuration);
   });
 });
 

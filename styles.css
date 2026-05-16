@@ -518,7 +518,7 @@ textarea {
   display: block;
   opacity: 1;
   transform: translateY(0);
-  animation: tabPanelIn 0.4s ease both;
+  animation: tabPanelIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .tab-panel.is-exiting {
@@ -750,11 +750,11 @@ textarea {
 .product-card.is-hiding {
   opacity: 0;
   pointer-events: none;
-  transform: scale(0.95);
+  transform: scale(0.92) translateY(10px);
 }
 
 .product-card.is-showing {
-  animation: productReveal 0.42s ease both;
+  animation: productReveal 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .packaging-banner {
@@ -803,7 +803,7 @@ textarea {
 .map-wrap {
   position: relative;
   overflow: hidden;
-  aspect-ratio: 2.05;
+  aspect-ratio: 2 / 1;
   background: #0b1d30;
   border: 1px solid rgba(255, 255, 255, 0.13);
   border-radius: var(--radius);
@@ -866,23 +866,23 @@ textarea {
 }
 
 .map-pin.india {
-  left: 69.2%;
-  top: 43.6%;
+  left: 70.5%;
+  top: 38.5%;
 }
 
 .map-pin.uae {
-  left: 64.9%;
-  top: 39.8%;
+  left: 65.1%;
+  top: 36.4%;
 }
 
 .map-pin.uk {
-  left: 49.1%;
-  top: 23.6%;
+  left: 49.5%;
+  top: 21.0%;
 }
 
 .map-pin.singapore {
-  left: 75.4%;
-  top: 50.2%;
+  left: 78.8%;
+  top: 49.3%;
 }
 
 .map-legend {
@@ -1203,9 +1203,7 @@ textarea:focus {
   transition: color 160ms ease;
 }
 
-.footer-column a:hover,
-.footer-legal a:hover,
-.back-top:hover {
+.footer-column a:hover {
   color: var(--golden-soft);
 }
 
@@ -1221,7 +1219,7 @@ textarea:focus {
 
 .footer-bottom-inner {
   display: grid;
-  grid-template-columns: 1fr auto auto;
+  grid-template-columns: 1fr auto;
   gap: 22px;
   align-items: center;
   width: var(--container);
@@ -1234,15 +1232,35 @@ textarea:focus {
   margin: 0;
 }
 
-.footer-legal {
-  display: flex;
-  gap: 16px;
+.back-top {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  color: var(--corporate-navy);
+  background: linear-gradient(145deg, var(--golden-soft), var(--golden-wheat));
+  border-radius: 999px;
+  font-size: 0.88rem;
+  font-weight: 800;
+  box-shadow: 0 8px 20px rgba(216, 162, 58, 0.22);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
 }
 
-.footer-legal a,
-.back-top {
-  color: rgba(255, 255, 255, 0.72);
-  font-weight: 800;
+.back-top svg {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.2s ease;
+}
+
+.back-top:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(216, 162, 58, 0.35);
+  filter: brightness(1.05);
+  color: var(--corporate-navy);
+}
+
+.back-top:hover svg {
+  transform: translateY(-2px);
 }
 
 @keyframes pulse {
@@ -1259,7 +1277,7 @@ textarea:focus {
 @keyframes tabPanelIn {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(15px);
   }
   to {
     opacity: 1;
@@ -1270,11 +1288,11 @@ textarea:focus {
 @keyframes productReveal {
   from {
     opacity: 0;
-    transform: scale(0.95);
+    transform: scale(0.92) translateY(20px);
   }
   to {
     opacity: 1;
-    transform: scale(1);
+    transform: scale(1) translateY(0);
   }
 }
 
@@ -1293,14 +1311,121 @@ textarea:focus {
   }
 }
 
+.hamburger-btn {
+  display: none;
+  background: transparent;
+  border: 0;
+  color: var(--white);
+  cursor: pointer;
+  padding: 8px;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+
+.hamburger-btn svg {
+  width: 26px;
+  height: 26px;
+}
+
+.hamburger-btn .icon-close {
+  display: none;
+}
+
+.hamburger-btn.is-active .icon-menu {
+  display: none;
+}
+
+.hamburger-btn.is-active .icon-close {
+  display: block;
+}
+
+.mobile-menu {
+  position: fixed;
+  top: 82px;
+  left: 12px;
+  right: 12px;
+  z-index: 49;
+  background: rgba(15, 37, 55, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: var(--radius);
+  box-shadow: 0 20px 50px rgba(16, 42, 67, 0.35);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-15px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  overflow: hidden;
+}
+
+.mobile-menu.is-open {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.mobile-menu-inner {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  gap: 12px;
+}
+
+.mobile-menu-inner a {
+  color: var(--white);
+  font-size: 1.05rem;
+  font-weight: 700;
+  padding: 10px 14px;
+  border-radius: 6px;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.mobile-menu-inner a:hover {
+  background: rgba(216, 162, 58, 0.18);
+  color: var(--golden-soft);
+}
+
+.mobile-menu-inner .mobile-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+  padding: 12px 16px;
+  color: var(--corporate-navy);
+  background: var(--golden-soft);
+  border-radius: 7px;
+  font-weight: 800;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(216, 162, 58, 0.25);
+}
+
+.mobile-menu-inner .mobile-cta:hover {
+  background: var(--golden-wheat);
+  color: var(--corporate-navy);
+}
+
+.mobile-menu-inner .mobile-cta svg {
+  width: 18px;
+  height: 18px;
+}
+
+@media (max-width: 768px) {
+  .main-nav,
+  .header-cta {
+    display: none;
+  }
+
+  .hamburger-btn {
+    display: flex;
+  }
+}
+
 @media (max-width: 980px) {
   .site-header {
     inset: 10px 12px auto;
     width: calc(100% - 24px);
-  }
-
-  .main-nav {
-    display: none;
   }
 
   .hero {
@@ -1366,10 +1491,6 @@ textarea:focus {
     padding: 10px;
   }
 
-  .brand span:last-child {
-    display: none;
-  }
-
   .header-cta {
     padding: 10px;
   }
@@ -1419,35 +1540,11 @@ textarea:focus {
     grid-template-columns: 1fr;
   }
 
-  .map-wrap {
-    aspect-ratio: 1.22;
-  }
-
   .map-pin span {
     top: auto;
     left: 50%;
     bottom: 18px;
     transform: translateX(-50%);
-  }
-
-  .map-pin.india {
-    left: 69.2%;
-    top: 43.6%;
-  }
-
-  .map-pin.uae {
-    left: 64.9%;
-    top: 39.8%;
-  }
-
-  .map-pin.uk {
-    left: 49.1%;
-    top: 23.6%;
-  }
-
-  .map-pin.singapore {
-    left: 75.4%;
-    top: 50.2%;
   }
 
   .map-legend {
